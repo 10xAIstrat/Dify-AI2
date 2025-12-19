@@ -11,6 +11,11 @@ dependencies:
   value:
     marketplace_plugin_unique_identifier: langgenius/gemini:0.6.4@17f286b2d6699a258a2eba8bc1bff71b8f795b6aa7bee1464cbfa450b451303a
     version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.0.7@11ec0b1909200f62b6ebf2cec1da981a9071d11c1ee0e2ef332ce89bcffa2544
+    version: null
 kind: app
 version: 0.5.0
 workflow:
@@ -104,26 +109,8 @@ workflow:
         selected: false
         title: ユーザー入力
         type: start
-        variables:
-        - default: ''
-          hint: ''
-          label: error_text
-          max_length: 20000
-          options: []
-          placeholder: ''
-          required: true
-          type: paragraph
-          variable: error_text
-        - default: ''
-          hint: ''
-          label: io_spec
-          max_length: 20000
-          options: []
-          placeholder: ''
-          required: true
-          type: paragraph
-          variable: io_spec
-      height: 134
+        variables: []
+      height: 72
       id: '1765364715941'
       position:
         x: 80
@@ -144,8 +131,8 @@ workflow:
           completion_params:
             temperature: 0
           mode: chat
-          name: gemini-2.0-flash
-          provider: langgenius/gemini/google
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
         prompt_template:
         - id: b43c0c5b-ac1f-46c5-b706-e15b2e91c68c
           role: system
@@ -202,7 +189,7 @@ workflow:
             （まだ失敗する場合に追加で欲しい情報や次の確認点）
 
             [/NEXT_IF_FAILS]'
-        selected: false
+        selected: true
         title: LLM
         type: llm
         vision:
@@ -215,7 +202,7 @@ workflow:
       positionAbsolute:
         x: 248
         y: 64
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -261,26 +248,12 @@ workflow:
           mode: chat
           name: gemini-2.0-flash
           provider: langgenius/gemini/google
-        parameters:
-        - description: LLMの出力から、[FIXED_CODE] と [/FIXED_CODE] の間にある「修正後のコード全文」をそのまま抽出してください。改行は保持し、余計な説明文や
-            ``` などは含めないでください。
-          name: fixed_code
-          required: true
-          type: string
-        - description: LLMの出力から、[SUMMARY] と [/SUMMARY] の間にある「修正内容の要約」を抽出してください。
-          name: summary
-          required: true
-          type: string
-        - description: LLMの出力から、[ASSUMPTIONS] と [/ASSUMPTIONS] の間にある「前提条件・仮定」を抽出してください。NONE
-            と書かれている場合は "NONE" を返してください。
-          name: assumptions
-          required: true
-          type: string
+        parameters: []
         query:
         - '1765604886299'
         - text
         reasoning_mode: prompt
-        selected: true
+        selected: false
         title: パラメータ抽出
         type: parameter-extractor
         vision:
@@ -293,7 +266,7 @@ workflow:
       positionAbsolute:
         x: 404
         y: 303
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -337,7 +310,7 @@ workflow:
       type: custom
       width: 241
     viewport:
-      x: -190.53011789618495
-      y: 29.45020135865417
+      x: -109.53011789618495
+      y: 3.4502013586541693
       zoom: 0.9999999999999999
   rag_pipeline_variables: []
