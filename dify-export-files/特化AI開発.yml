@@ -1,0 +1,421 @@
+app:
+  description: 各コンペに特化したAIのソースコードを生成
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 特化AI開発
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.6.4@17f286b2d6699a258a2eba8bc1bff71b8f795b6aa7bee1464cbfa450b451303a
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1764818061972--1764818269099-target
+      source: '1764818061972'
+      sourceHandle: source
+      target: '1764818269099'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1764818269099-source-1765364237653-target
+      source: '1764818269099'
+      sourceHandle: source
+      target: '1765364237653'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: llm
+      id: 1765364237653-source-1764818272537-target
+      source: '1765364237653'
+      sourceHandle: source
+      target: '1764818272537'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1764818272537-source-1765364253151-target
+      source: '1764818272537'
+      sourceHandle: source
+      target: '1765364253151'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: end
+      id: 1765364253151-source-1764818286067-target
+      source: '1765364253151'
+      sourceHandle: source
+      target: '1764818286067'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: ユーザー入力
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: overview_text
+          max_length: 13000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: overview_text
+        - default: ''
+          hint: ''
+          label: file_paths
+          max_length: 13000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: file_paths
+        - default: ''
+          hint: ''
+          label: file_heads_json
+          max_length: 13000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: file_heads_json
+      height: 160
+      id: '1764818061972'
+      position:
+        x: 71
+        y: 72
+      positionAbsolute:
+        x: 71
+        y: 72
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: bdd3f0fe-8d92-4c85-906f-b8f849282a9a
+          role: system
+          text: 'あなたは Kaggle コンペの構成を解析し、
+
+            開発する AI の入出力仕様を設計するアシスタントです。
+
+
+            出力は Markdown 形式で、後段の LLM が Python コードを書けるくらい
+
+            具体的な「io_spec」を作成してください。'
+        - id: 134cb761-bdd3-4e9f-8b3b-392d8b207237
+          role: user
+          text: '以下の情報を読み、このコンペで開発する AI の入出力仕様（io_spec）を整理してください。
+
+
+            # コンペ概要
+
+            {{#1764818061972.overview_text#}}
+
+
+            # ディレクトリ内のファイル一覧
+
+            {{#1764818061972.file_paths#}}
+
+
+            # 各ファイルの先頭数行（JSON）
+
+            {{#1764818061972.file_heads_json#}}
+
+
+            - どのファイルをどう使うか
+
+            - 学習データ／テストデータの場所
+
+            - 期待される出力（例: submission.csv の形式）
+
+
+            などを Markdown で詳しく書いてください。
+
+            '
+        selected: false
+        structured_output_enabled: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1764818269099'
+      position:
+        x: 155
+        y: 385
+      positionAbsolute:
+        x: 155
+        y: 385
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 3b3a107e-346c-4c54-a17a-4b60348dfc30
+          role: system
+          text: 'あなたは熟練した Python エンジニアです。
+
+            Kaggle コンペ用の AI コードを作成します。
+
+            必ず `run_ai(competition_dir: str, output_dir: str)` 関数を定義してください。
+
+
+            生成するコードは 単一ファイルで完結 させること。
+
+            config.json など、外部の設定ファイルに依存してはいけない。
+
+            competition_dir 直下にある train.csv / test.csv / sample_submission.csv などを
+
+            コード内で自分で探して読み込むこと。
+
+            入口となる関数は必ず
+
+            def run_ai(competition_dir: str, output_dir: str):
+
+            の形で定義すること。
+
+            Python コードのみを出力し、python や などの Markdown 記号は出力しないこと。'
+        - id: 22a945fd-a22d-4f90-a7df-a4352ef533ea
+          role: user
+          text: '次の入出力仕様（io_spec）にしたがって、
+
+            Kaggle コンペ用の Python コードを生成してください。
+
+
+            - `competition_dir` にはコンペのファイル一式が入っています。
+
+            - `output_dir` に submission などの成果物を保存してください。
+
+
+            # io_spec
+
+            {{#1764818269099.text#}}
+
+
+            コードのみを出力してください。
+
+            '
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1764818272537'
+      position:
+        x: 503
+        y: 98
+      positionAbsolute:
+        x: 503
+        y: 98
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1765364237653'
+          - io_spec
+          value_type: string
+          variable: io_spec
+        - value_selector:
+          - '1765364253151'
+          - ai_code
+          value_type: string
+          variable: ai_code
+        selected: false
+        title: 出力
+        type: end
+      height: 114
+      id: '1764818286067'
+      position:
+        x: 725.8
+        y: 400
+      positionAbsolute:
+        x: 725.8
+        y: 400
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: "あなたの役割は、入力テキストから io_specの値を抽出することです。\n\n入力テキストは JSON 形式の文字列です。例：\n\
+          {\n  \"io_spec\": \"...\",\n}\n\nやってほしいこと：\n- JSON のキー\"io_spec\"の値を読み取り、\n\
+          \  それぞれパラメータio_specにセットしてください。\n- 値の内容は一切書き換えず、そのままコピーしてください。\n- 他の余計なテキストは生成しないでください。"
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        parameters:
+        - description: Kaggle コンペの入出力仕様のテキスト（Markdown）
+          name: io_spec
+          required: true
+          type: string
+        query:
+        - '1764818269099'
+        - text
+        reasoning_mode: prompt
+        selected: true
+        title: パラメータ抽出
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 87
+      id: '1765364237653'
+      position:
+        x: 322
+        y: 240
+      positionAbsolute:
+        x: 322
+        y: 240
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: "あなたの役割は、入力テキストからai_codeの値を抽出することです。\n\n入力テキストは JSON 形式の文字列です。例：\n\
+          {\n  \"ai_code\": \"...\"\n}\n\nやってほしいこと：\n- JSON のキー\"ai_code\"の値を読み取り、\n\
+          \  それぞれパラメータai_codeにセットしてください。\n- 値の内容は一切書き換えず、そのままコピーしてください。\n- 他の余計なテキストは生成しないでください。"
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        parameters:
+        - description: Pythonコード全文
+          name: ai_code
+          required: true
+          type: string
+        query:
+        - '1764818272537'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: パラメータ抽出 2
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 87
+      id: '1765364253151'
+      position:
+        x: 685.8
+        y: 240
+      positionAbsolute:
+        x: 685.8
+        y: 240
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -19.299999999999955
+      y: 4
+      zoom: 1
+  rag_pipeline_variables: []

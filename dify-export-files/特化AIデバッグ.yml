@@ -1,0 +1,356 @@
+app:
+  description: 各コンペに特化したAIのソースコードをデバッグ
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 特化AIデバッグ
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.6.4@17f286b2d6699a258a2eba8bc1bff71b8f795b6aa7bee1464cbfa450b451303a
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1765364715941--1765604886299-target
+      source: '1765364715941'
+      sourceHandle: source
+      target: '1765604886299'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1765604886299--1765604892169-target
+      source: '1765604886299'
+      sourceHandle: source
+      target: '1765604892169'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: end
+      id: 1765604892169--1765604907489-target
+      source: '1765604892169'
+      sourceHandle: source
+      target: '1765604907489'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: ユーザー入力
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: ai_code
+          max_length: 20000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: ai_code
+        - default: ''
+          hint: ''
+          label: error_text
+          max_length: 20000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: error_text
+        - default: ''
+          hint: ''
+          label: io_spec
+          max_length: 20000
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: io_spec
+      height: 160
+      id: '1765364715941'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: b43c0c5b-ac1f-46c5-b706-e15b2e91c68c
+          role: system
+          text: あなたはPythonコードのデバッグ担当。与えられたコードとエラーを読み、最小の修正で動くように直す。
+        - id: e18231fd-85e9-4bd3-8f2b-b2f54e31390a
+          role: user
+          text: '入出力仕様（あれば遵守）：
+
+            {{#1765364715941.io_spec#}}
+
+            失敗したコード：
+
+            {{#1765364715941.ai_code#}}
+
+            実行エラー全文：
+
+            {{#1765364715941.error_text#}}
+
+
+            要件：
+
+            - エラー原因を特定し、最小の修正で動くように直してください。
+
+            - 省略は禁止（… や “以下略” は禁止）。完全なコード全文を返してください。
+
+            - 追加インストールが必要ならコード先頭に `!pip -q install ...` を含めてください。
+
+
+            出力形式（厳守・この順番で）：
+
+            [FIXED_CODE]
+
+            （ここに修正版コード全文。``` や説明文は禁止）
+
+            [/FIXED_CODE]
+
+
+            [SUMMARY]
+
+            （何を直したかを1〜5行）
+
+            [/SUMMARY]
+
+
+            [ASSUMPTIONS]
+
+            （前提があれば箇条書き。なければ "NONE"）
+
+            [/ASSUMPTIONS]
+
+
+            [NEXT_IF_FAILS]
+
+            （まだ失敗する場合に追加で欲しい情報や次の確認点）
+
+            [/NEXT_IF_FAILS]'
+        selected: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1765604886299'
+      position:
+        x: 248
+        y: 64
+      positionAbsolute:
+        x: 248
+        y: 64
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        instruction: '以下のタグで囲まれた範囲から、指定パラメータを抽出してください（タグ自体は含めない）。
+
+
+          抽出ルール：
+
+          1) fixed_code：
+
+          - 改行・インデントは保持する（コード全文を崩さない）
+
+          - 余計な説明文、```、前後の空白行の追加はしない（必要なら先頭末尾の空行は1行程度までに抑える）
+
+
+          2) summary：
+
+          - 特になし
+
+
+          3) assumptions：
+
+          - もし中身が "NONE"（大文字小文字は問わない）だけなら "NONE" を返す
+
+
+          4) next_if_fails：
+
+          - 特になし
+
+
+          共通：
+
+          - もし該当タグが存在しない場合、そのパラメータは空文字 "" を返す
+
+          - タグの順序が前後していても、各タグペアを優先して抽出する
+
+          - 同じタグが複数回出た場合は「最初の1つ」を採用する'
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        parameters:
+        - description: LLMの出力から、[FIXED_CODE] と [/FIXED_CODE] の間にある「修正後のコード全文」をそのまま抽出してください。改行は保持し、余計な説明文や
+            ``` などは含めないでください。
+          name: fixed_code
+          required: true
+          type: string
+        - description: LLMの出力から、[SUMMARY] と [/SUMMARY] の間にある「修正内容の要約」を抽出してください。
+          name: summary
+          required: true
+          type: string
+        - description: LLMの出力から、[ASSUMPTIONS] と [/ASSUMPTIONS] の間にある「前提条件・仮定」を抽出してください。NONE
+            と書かれている場合は "NONE" を返してください。
+          name: assumptions
+          required: true
+          type: string
+        - description: LLMの出力から、[NEXT_IF_FAILS] と [/NEXT_IF_FAILS] の間にある「まだ失敗する場合の次の確認事項」を抽出してください。
+          name: next_if_fails
+          required: true
+          type: string
+        query:
+        - '1765604886299'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: パラメータ抽出
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 87
+      id: '1765604892169'
+      position:
+        x: 404
+        y: 303
+      positionAbsolute:
+        x: 404
+        y: 303
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1765604892169'
+          - fixed_code
+          value_type: string
+          variable: fixed_code
+        - value_selector:
+          - '1765604892169'
+          - summary
+          value_type: string
+          variable: summary
+        - value_selector:
+          - '1765604892169'
+          - assumptions
+          value_type: string
+          variable: assumptions
+        - value_selector:
+          - '1765604892169'
+          - next_if_fails
+          value_type: string
+          variable: next_if_fails
+        selected: false
+        title: 出力
+        type: end
+      height: 166
+      id: '1765604907489'
+      position:
+        x: 619
+        y: 64
+      positionAbsolute:
+        x: 619
+        y: 64
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 78.46988210381505
+      y: -9.54979864134583
+      zoom: 0.9999999999999999
+  rag_pipeline_variables: []
