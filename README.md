@@ -9,3 +9,8 @@ https://colab.research.google.com/drive/1I9sNuZlYG8FJOX_bp-bPULO0eX1MxLsN?usp=sh
 
 ファイル置き場（ここ）<br>
 https://github.com/10xAIstrat/Dify-AI2<br><br>
+
+## フォルダの説明
+
+`dify-export-files`: Difyでエクスポートされたファイル
+`tutorial-datasets`: 使用するデータセット
