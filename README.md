@@ -13,6 +13,10 @@ https://github.com/10xAIstrat/Dify-AI2<br><br>
 ## Dify
 https://cloud.dify.ai/apps<br><br>
 
+## Google AI Studio
+https://aistudio.google.com/welcome<br>
+GeminiのAPIキーを作るために使います<br><br>
+
 ## フォルダの説明
 
 `dify-export-files`: Difyでエクスポートされたファイル（インポートして使ってください）<br>
