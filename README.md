@@ -12,5 +12,5 @@ https://github.com/10xAIstrat/Dify-AI2<br><br>
 
 ## フォルダの説明
 
-`dify-export-files`: Difyでエクスポートされたファイル<br>
-`tutorial-datasets`: 使用するデータセット
+`dify-export-files`: Difyでエクスポートされたファイル（インポートして使ってください）<br>
+`tutorial-datasets`: 本チュートリアルで使用するデータセット（Google Colabから自動でダウンロードされます）
